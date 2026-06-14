@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía: Tender la Cama</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#fce4ec;min-height:100vh;padding:16px;}
+
+.header{background:linear-gradient(135deg,#E91E63,#880E4F);color:#fff;text-align:center;
+  padding:26px 16px 20px;border-radius:24px;margin-bottom:22px;
+  box-shadow:0 6px 24px rgba(136,14,79,.35);}
+.header h1{font-size:2rem;font-weight:900;letter-spacing:-.5px;}
+.header p{font-size:1rem;margin-top:6px;opacity:.85;}
+
+.prog-lbl{text-align:right;font-size:.85rem;font-weight:700;color:#880E4F;margin-bottom:5px;}
+.prog-wrap{background:#f8bbd0;border-radius:50px;height:14px;margin-bottom:22px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,#E91E63,#FF4081);
+  border-radius:50px;transition:width .45s ease;width:0%;}
+
+.steps{display:flex;flex-direction:column;gap:16px;}
+.scard{background:#fff;border-radius:20px;box-shadow:0 3px 12px rgba(0,0,0,.1);
+  overflow:hidden;border-left:6px solid #E91E63;transition:transform .15s,box-shadow .15s;}
+.scard:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.shead{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;
+  background:linear-gradient(90deg,#fce4ec,#fff);user-select:none;}
+.snum{background:#E91E63;color:#fff;font-size:1.05rem;font-weight:900;
+  width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;}
+.stitle{font-size:1.05rem;font-weight:800;color:#880E4F;flex:1;}
+.sarrow{font-size:1.1rem;transition:transform .3s;}
+.scard.open .sarrow{transform:rotate(180deg);}
+.sbody{display:none;padding:0 16px 16px;}
+.scard.open .sbody{display:block;}
+
+.vstage{border-radius:16px;border:2px solid #F48FB1;background:#fff9fb;
+  overflow:hidden;position:relative;margin-bottom:12px;}
+.vstage canvas{display:block;width:100%;height:auto;}
+.vcap{text-align:center;font-size:.8rem;font-weight:700;color:#880E4F;
+  padding:5px 8px 7px;background:#fce4ec;}
+
+.stxt{font-size:.97rem;color:#333;line-height:1.65;margin-bottom:12px;padding-top:6px;}
+
+.dbtn{display:block;width:100%;background:#388E3C;color:#fff;border:none;
+  border-radius:50px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;
+  padding:11px 0;cursor:pointer;transition:background .2s,transform .1s;}
+.dbtn:hover{background:#2E7D32;transform:scale(1.02);}
+.dbtn.done{background:#880E4F;cursor:default;}
+.dbtn:disabled{cursor:default;}
+
+@media(max-width:480px){.header h1{font-size:1.5rem;}.stitle{font-size:.95rem;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🛏️ Cómo tender la cama</h1>
+  <p>Instrucciones claras, secuenciales y directas</p>
+</div>
+
+<div class="prog-lbl" id="pl">0 de 5 pasos completados</div>
+<div class="prog-wrap"><div class="prog-bar" id="pb"></div></div>
+
+<div class="steps">
+
+  <div class="scard" id="c1">
+    <div class="shead" onclick="toggle('c1')">
+      <div class="snum">1</div><div class="stitle">Despejar la cama</div><div class="sarrow">▼</div>
+    </div>
+    <div class="sbody">
+      <div class="vstage"><canvas id="cv-c1" width="480" height="220"></canvas>
+        <div class="vcap">🧸 Quita la almohada y los juguetes de la cama</div></div>
+      <p class="stxt">Quita la almohada y los juguetes. Ponlos en una silla o en el suelo.</p>
+      <button class="dbtn" onclick="markDone('c1')">✅ ¡Lo hice!</button>
+    </div>
+  </div>
+
+  <div class="scard" id="c2">
+    <div class="shead" onclick="toggle('c2')">
+      <div class="snum">2</div><div class="stitle">Estirar la sábana</div><div class="sarrow">▼</div>
+    </div>
+    <div class="sbody">
+      <div class="vstage"><canvas id="cv-c2" width="480" height="220"></canvas>
+        <div class="vcap">👐 Jala la sábana hasta que quede lisa y sin arrugas</div></div>
+      <p class="stxt">Jálala hasta que quede lisa.</p>
+      <button class="dbtn" onclick="markDone('c2')">✅ ¡Lo hice!</button>
+    </div>
+  </div>
+
+  <div class="scard" id="c3">
+    <div class="shead" onclick="toggle('c3')">
+      <div class="snum">3</div><div class="stitle">Estirar la cobija o edredón</div><div class="sarrow">▼</div>
+    </div>
+    <div class="sbody">
+      <div class="vstage"><canvas id="cv-c3" width="480" height="220"></canvas>
+        <div class="vcap">🛏️ Cubre toda la cama de forma pareja</div></div>
+      <p class="stxt">Cubre toda la cama de forma pareja.</p>
+      <button class="dbtn" onclick="markDone('c3')">✅ ¡Lo hice!</button>
+    </div>
+  </div>
+
+  <div class="scard" id="c4">
+    <div class="shead" onclick="toggle('c4')">
+      <div class="snum">4</div><div class="stitle">Colocar la almohada</div><div class="sarrow">▼</div>
+    </div>
+    <div class="sbody">
+      <div class="vstage"><canvas id="cv-c4" width="480" height="220"></canvas>
+        <div class="vcap">💤 Pon la almohada en la parte superior de la cama</div></div>
+      <p class="stxt">Ponla en la parte superior de la cama.</p>
+      <button class="dbtn" onclick="markDone('c4')">✅ ¡Lo hice!</button>
+    </div>
+  </div>
+
+  <div class="scard" id="c5">
+    <div class="shead" onclick="toggle('c5')">
+      <div class="snum">5</div><div class="stitle">Decorar</div><div class="sarrow">▼</div>
+    </div>
+    <div class="sbody">
+      <div class="vstage"><canvas id="cv-c5" width="480" height="220"></canvas>
+        <div class="vcap">⭐ ¡Acomoda los peluches y tu cama está lista!</div></div>
+      <p class="stxt">Acomoda los peluches o juguetes. ¡Tu cama está lista!</p>
+      <button class="dbtn" onclick="markDone('c5')">✅ ¡Lo hice!</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const done=new Set();
+const loops={};
+const TOTAL=5;
+
+function toggle(id){
+  const card=document.getElementById(id);
+  const wasOpen=card.classList.contains('open');
+  card.classList.toggle('open');
+  if(!wasOpen) startAnim(id); else stopAnim(id);
+}
+
+function markDone(id){
+  done.add(id);
+  const btn=document.querySelector('#'+id+' .dbtn');
+  btn.textContent='🌟 ¡Muy bien!'; btn.classList.add('done'); btn.disabled=true;
+  document.getElementById(id).style.borderLeftColor='#388E3C';
+  document.getElementById(id).querySelector('.snum').style.background='#388E3C';
+  const n=done.size;
+  document.getElementById('pb').style.width=(n/TOTAL*100)+'%';
+  document.getElementById('pl').textContent=n+' de '+TOTAL+' pasos completados'+(n===TOTAL?' 🎉 ¡Excelente!':'');
+}
+
+function stopAnim(id){ if(loops[id]){ cancelAnimationFrame(loops[id]); delete loops[id]; } }
+
+function startAnim(id){
+  stopAnim(id);
+  const fn=animFns[id];
+  if(!fn) return;
+  const cv=document.getElementById('cv-'+id);
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  let t=0;
+  function frame(){ ctx.clearRect(0,0,cv.width,cv.height); fn(ctx,cv.width,cv.height,t); t++; loops[id]=requestAnimationFrame(frame); }
+  frame();
+}
+
+function sky(ctx,W,H,a,b){
+  const g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,a); g.addColorStop(1,b);
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+}
+
+function drawBed(ctx,x,y,sheetColor,blanketY,blanketH){
+  sheetColor=sheetColor||'#e3f2fd'; blanketY=blanketY||0; blanketH=blanketH||60;
+  ctx.fillStyle='#8D6E63'; ctx.beginPath(); ctx.roundRect(x-90,y-20,180,90,8); ctx.fill();
+  ctx.fillStyle='#fff9c4'; ctx.beginPath(); ctx.roundRect(x-84,y-10,168,70,6); ctx.fill();
+  ctx.fillStyle=sheetColor; ctx.beginPath(); ctx.roundRect(x-82,y-8,164,65,5); ctx.fill();
+  ctx.fillStyle='#81D4FA'; ctx.beginPath(); ctx.roundRect(x-82,y-8+blanketY,164,blanketH,5); ctx.fill();
+  ctx.fillStyle='#6D4C41'; ctx.beginPath(); ctx.roundRect(x-90,y-30,180,18,6); ctx.fill();
+}
+
+function drawPillow(ctx,x,y,op){
+  op=op===undefined?1:op;
+  ctx.save(); ctx.globalAlpha=op;
+  ctx.fillStyle='#fffde7'; ctx.strokeStyle='#f0e68c'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.roundRect(x-30,y,60,25,10); ctx.fill(); ctx.stroke();
+  ctx.restore();
+}
+
+function drawTeddyBear(ctx,x,y,sc){
+  sc=sc||1;
+  ctx.save(); ctx.translate(x,y); ctx.scale(sc,sc);
+  ctx.fillStyle='#A1887F'; ctx.beginPath(); ctx.arc(0,0,16,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(0,-22,12,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#D7CCC8'; ctx.beginPath(); ctx.arc(0,-18,6,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#795548';
+  ctx.beginPath(); ctx.arc(-5,-24,4,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(5,-24,4,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#4E342E';
+  ctx.beginPath(); ctx.arc(-4,-23,1.5,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(4,-23,1.5,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+function drawPerson(ctx,x,y,sc,armA){
+  sc=sc||1; armA=armA||0;
+  ctx.save(); ctx.translate(x,y); ctx.scale(sc,sc);
+  ctx.fillStyle='#FF8A65'; ctx.beginPath(); ctx.roundRect(-14,-30,28,40,6); ctx.fill();
+  ctx.fillStyle='#FFCC80'; ctx.beginPath(); ctx.arc(0,-44,18,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#333';
+  ctx.beginPath(); ctx.arc(-6,-46,2.5,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(6,-46,2.5,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#555'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(0,-40,5,0.2,Math.PI-0.2); ctx.stroke();
+  ctx.strokeStyle='#FF8A65'; ctx.lineWidth=8; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(-14,-20); ctx.lineTo(-14-18*Math.cos(armA),-20+18*Math.sin(armA)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(14,-20);  ctx.lineTo(14+18*Math.cos(armA),-20+18*Math.sin(armA)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-7,10); ctx.lineTo(-10,38); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(7,10);  ctx.lineTo(10,38);  ctx.stroke();
+  ctx.restore();
+}
+
+function drawStar(ctx,x,y,r,t){
+  ctx.save(); ctx.translate(x,y); ctx.rotate(t*0.05);
+  ctx.fillStyle='#FDD835'; ctx.beginPath();
+  for(let i=0;i<5;i++){
+    const a=Math.PI/180*(72*i-90),b=Math.PI/180*(72*i-90+36);
+    if(i===0) ctx.moveTo(r*Math.cos(a),r*Math.sin(a)); else ctx.lineTo(r*Math.cos(a),r*Math.sin(a));
+    ctx.lineTo(r*.4*Math.cos(b),r*.4*Math.sin(b));
+  }
+  ctx.closePath(); ctx.fill(); ctx.restore();
+}
+
+const animFns={
+  'c1':(ctx,W,H,t)=>{
+    sky(ctx,W,H,'#fff3e0','#ffe0b2');
+    const p=(t%120)/120;
+    drawBed(ctx,W/2+10,H/2-20);
+    const py=H/2-8-p*60, px=W/2-40+p*50;
+    if(p<0.9) drawPillow(ctx,px,py,1-p*0.3);
+    const ty=H/2+20-p*80, tx=W/2+30+p*60;
+    if(p<0.8) drawTeddyBear(ctx,tx,ty,0.8);
+    drawPerson(ctx,W/2-100,H/2+55,1,0.5+p*0.5);
+    ctx.strokeStyle='#E65100'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(W/2-20,H/2); ctx.lineTo(W/2+30,H/2-40); ctx.stroke();
+    ctx.fillStyle='#E65100';
+    ctx.beginPath(); ctx.moveTo(W/2+30,H/2-40); ctx.lineTo(W/2+20,H/2-30); ctx.lineTo(W/2+35,H/2-28); ctx.fill();
+    ctx.fillStyle='#BF360C'; ctx.font='bold 13px Nunito'; ctx.textAlign='center';
+    ctx.fillText('Quita todo de la cama 🧸',W/2,H-10);
+  },
+  'c2':(ctx,W,H,t)=>{
+    sky(ctx,W,H,'#f3e5f5','#e1bee7');
+    const p=(t%100)/100;
+    const stretch=Math.sin(p*Math.PI);
+    drawBed(ctx,W/2,H/2-20,'#e8eaf6');
+    if(stretch<0.5){
+      ctx.strokeStyle='rgba(121,134,203,0.5)'; ctx.lineWidth=2;
+      for(let i=0;i<4;i++){
+        ctx.beginPath();
+        ctx.moveTo(W/2-70+i*30,H/2-5);
+        ctx.quadraticCurveTo(W/2-55+i*30,H/2+10,W/2-40+i*30,H/2-5);
+        ctx.stroke();
+      }
+    }
+    const off=stretch*22;
+    ctx.font='28px serif'; ctx.textAlign='center';
+    ctx.fillText('🤚',W/2-90-off,H/2+5);
+    ctx.fillText('🤚',W/2+90+off,H/2+5);
+    ctx.strokeStyle='#4A148C'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(W/2-50,H/2); ctx.lineTo(W/2-80-off,H/2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W/2+50,H/2); ctx.lineTo(W/2+80+off,H/2); ctx.stroke();
+    ctx.fillStyle='#4A148C'; ctx.font='bold 13px Nunito';
+    ctx.fillText(stretch>0.5?'¡Sin arrugas! ✅':'Jala hacia los lados...',W/2,H-10);
+  },
+  'c3':(ctx,W,H,t)=>{
+    sky(ctx,W,H,'#e8eaf6','#c5cae9');
+    const p=(t%100)/100;
+    const blanketY=-70+p*70;
+    drawBed(ctx,W/2,H/2-20,'#fff9c4',Math.max(0,blanketY),65);
+    if(blanketY<0){
+      ctx.fillStyle='#81D4FA';
+      ctx.beginPath(); ctx.roundRect(W/2-82,H/2-10+blanketY,164,10,4); ctx.fill();
+    }
+    ctx.font='28px serif'; ctx.textAlign='center';
+    ctx.fillText('🙌',W/2-40,H/2-20+blanketY-20);
+    ctx.fillText('🙌',W/2+40,H/2-20+blanketY-20);
+    ctx.strokeStyle='#1A237E'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(W/2,H/2-50); ctx.lineTo(W/2,H/2-20+blanketY-15); ctx.stroke();
+    ctx.fillStyle='#1A237E';
+    ctx.beginPath(); ctx.moveTo(W/2,H/2-20+blanketY-10); ctx.lineTo(W/2-7,H/2-30+blanketY); ctx.lineTo(W/2+7,H/2-30+blanketY); ctx.fill();
+    drawPerson(ctx,W/2-100,H/2+50,1,0.5-p*0.3);
+    ctx.fillStyle='#1A237E'; ctx.font='bold 13px Nunito'; ctx.textAlign='center';
+    ctx.fillText('Cubre toda la cama de forma pareja 🛏️',W/2,H-10);
+  },
+  'c4':(ctx,W,H,t)=>{
+    sky(ctx,W,H,'#e0f7fa','#b2ebf2');
+    const p=(t%100)/100;
+    const ease=p<0.5?2*p*p:-1+(4-2*p)*p;
+    drawBed(ctx,W/2,H/2-10,'#fff9c4',0,65);
+    const pily=20+ease*(H/2-28);
+    drawPillow(ctx,W/2,pily,0.4+ease*0.6);
+    ctx.setLineDash([4,4]); ctx.strokeStyle='#00838F'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(W/2,20); ctx.lineTo(W/2,H/2-20); ctx.stroke();
+    ctx.setLineDash([]);
+    drawPerson(ctx,W/2+80,H/2+55,1,0.6-ease*0.4);
+    ctx.fillStyle='#006064'; ctx.font='bold 13px Nunito'; ctx.textAlign='center';
+    ctx.fillText(ease>0.85?'¡En su lugar! 💤':'Coloca la almohada arriba...',W/2,H-10);
+  },
+  'c5':(ctx,W,H,t)=>{
+    sky(ctx,W,H,'#fce4ec','#f8bbd0');
+    drawBed(ctx,W/2,H/2-15,'#fff9c4',0,65);
+    drawPillow(ctx,W/2,H/2-12);
+    const p=(t%120)/120;
+    [{ox:-40,d:0},{ox:0,d:0.15},{ox:40,d:0.3}].forEach(b=>{
+      const bp=Math.max(0,p-b.d)/(1-b.d);
+      const by=H/2-50-Math.abs(Math.sin(bp*Math.PI*2))*20*(1-bp);
+      drawTeddyBear(ctx,W/2+b.ox,by,0.3+bp*0.7);
+    });
+    for(let i=0;i<4;i++) drawStar(ctx,W/2-60+i*40,20+Math.sin(t*0.05+i)*6,12,t+i*20);
+    for(let i=0;i<8;i++){
+      const cx=((t*2+i*60)%W), cy=((t+i*30)%(H*0.6))+20;
+      ctx.fillStyle=['#F06292','#64B5F6','#FDD835','#81C784'][i%4];
+      ctx.beginPath(); ctx.arc(cx,cy,4,0,Math.PI*2); ctx.fill();
+    }
+    ctx.fillStyle='#880E4F'; ctx.font='bold 16px Nunito'; ctx.textAlign='center';
+    ctx.fillText('¡Tu cama está lista! 🎉',W/2,H-10);
+  },
+};
+
+toggle('c1');
+</script>
+</body>
+</html>

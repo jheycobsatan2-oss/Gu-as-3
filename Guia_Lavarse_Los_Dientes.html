@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía: Lavarse los Dientes</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#dff0ff;min-height:100vh;padding:16px;}
+
+.header{background:linear-gradient(135deg,#1976D2,#0D47A1);color:#fff;text-align:center;
+  padding:26px 16px 20px;border-radius:24px;margin-bottom:22px;
+  box-shadow:0 6px 24px rgba(13,71,161,.35);}
+.header h1{font-size:2rem;font-weight:900;letter-spacing:-.5px;}
+.header p{font-size:1rem;margin-top:6px;opacity:.85;}
+
+.prog-lbl{text-align:right;font-size:.85rem;font-weight:700;color:#0D47A1;margin-bottom:5px;}
+.prog-wrap{background:#bbdefb;border-radius:50px;height:14px;margin-bottom:22px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,#1976D2,#00BCD4);
+  border-radius:50px;transition:width .45s ease;width:0%;}
+
+.steps{display:flex;flex-direction:column;gap:16px;}
+.scard{background:#fff;border-radius:20px;box-shadow:0 3px 12px rgba(0,0,0,.1);
+  overflow:hidden;border-left:6px solid #1976D2;transition:transform .15s,box-shadow .15s;}
+.scard:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.shead{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;
+  background:linear-gradient(90deg,#e3f2fd,#fff);user-select:none;}
+.snum{background:#1976D2;color:#fff;font-size:1.05rem;font-weight:900;
+  width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;}
+.stitle{font-size:1.05rem;font-weight:800;color:#0D47A1;flex:1;}
+.sarrow{font-size:1.1rem;transition:transform .3s;}
+.scard.open .sarrow{transform:rotate(180deg);}
+.sbody{display:none;padding:0 16px 16px;}
+.scard.open .sbody{display:block;}
+
+.vstage{border-radius:16px;border:2px solid #90CAF9;background:#f0f8ff;
+  overflow:hidden;position:relative;margin-bottom:12px;}
+.vstage canvas{display:block;width:100%;height:auto;}
+.vcap{text-align:center;font-size:.8rem;font-weight:700;color:#1565C0;
+  padding:5px 8px 7px;background:#e3f2fd;}
+
+.stxt{font-size:.97rem;color:#333;line-height:1.65;margin-bottom:12px;padding-top:6px;}
+.stxt b{color:#c62828;}
+
+.dbtn{display:block;width:100%;background:#388E3C;color:#fff;border:none;
+  border-radius:50px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;
+  padding:11px 0;cursor:pointer;transition:background .2s,transform .1s;}
+.dbtn:hover{background:#2E7D32;transform:scale(1.02);}
+.dbtn.done{background:#1565C0;cursor:default;}
+.dbtn:disabled{cursor:default;}
+
+@media(max-width:480px){.header h1{font-size:1.5rem;}.stitle{font-size:.95rem;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🦷 Cómo lavarse los dientes</h1>
+  <p>Instrucciones claras, secuenciales y directas</p>
+</div>
+
+<div class="prog-lbl" id="pl">0 de 6 pasos completados</div>
+<div class="prog-wrap"><div class="prog-bar" id="pb"></div></div>
+
+<div class="steps">
+
+  <div class="scard" id="d1">
+    <div class="shead" onclick="toggle('d1')">
+      <div class="snum">1</div><div class="stitle">Preparar los materiales</div><div class="sarrow">▼</div>
+    </div>
+    <div class="sbody">
+      <div class="vstage"><canvas id="cv-d1" width="480" height="220"></canvas>
+        <div class="vcap">🪥 Toma el cepillo y la pasta dental</div></div>
+      <p class="stxt">Toma tu cepillo de dientes y el tubo de la pasta.</p>
+      <button class="dbtn" onclick="markDone('d1')">✅ ¡Lo hice!</button>
+    </div>
+  </div>
+
+  <div class="scard" id="d2">
+    <div class="shead" onclick="toggle('d2')">
+      <div class="snum">2</div><div class="stitle">Poner la pasta</div><div class="sarrow">▼</div>
+    </div>
+    <div class="sbody">
+      <div class="vstage"><canvas id="cv-d2" width="480" height="220"></canvas>
+        <div class="vcap">🧴 Pon pasta del tamaño de un guisante</div></div>
+      <p class="stxt">Abre la tapa de la pasta. Pon un poquito de pasta sobre las cerdas del cepillo. Cierra la tapa.</p>
+      <button class="dbtn" onclick="markDone('d2')">✅ ¡Lo hice!</button>
+    </div>
+  </div>
+
+  <div class="scard" id="d3">
+    <div class="shead" onclick="toggle('d3')">
+      <div class="snum">3</div><div class="stitle">Mojar el cepillo</div><div class="sarrow">▼</div>
+    </div>
+    <div class="sbody">
+      <div class="vstage"><canvas id="cv-d3" width="480" height="220"></canvas>
+        <div class="vcap">💧 Pasa el cepillo bajo el agua y cierra la llave</div></div>
+      <p class="stxt">Abre la llave del agua un poco. Pasa el cepillo con pasta rápidamente bajo el agua. Cierra la llave.</p>
+      <button class="dbtn" onclick="markDone('d3')">✅ ¡Lo hice!</button>
+    </div>
+  </div>
+
+  <div class="scard" id="d4">
+    <div class="shead" onclick="toggle('d4')">
+      <div class="snum">4</div><div class="stitle">Cepillar los dientes</div><div class="sarrow">▼</div>
+    </div>
+    <div class="sbody">
+      <div class="vstage"><canvas id="cv-d4" width="480" height="220"></canvas>
+        <div class="vcap">😁 Cepilla contando despacio hasta 20</div></div>
+      <p class="stxt">Lleva el cepillo a tu boca. Cepilla los dientes de arriba hacia abajo y los de abajo hacia arriba. Hazlo contando despacio hasta 20.</p>
+      <button class="dbtn" onclick="markDone('d4')">✅ ¡Lo hice!</button>
+    </div>
+  </div>
+
+  <div class="scard" id="d5">
+    <div class="shead" onclick="toggle('d5')">
+      <div class="snum">5</div><div class="stitle">Enjuagar la boca</div><div class="sarrow">▼</div>
+    </div>
+    <div class="sbody">
+      <div class="vstage"><canvas id="cv-d5" width="480" height="220"></canvas>
+        <div class="vcap">🥤 Enjuaga y escupe en el lavamanos</div></div>
+      <p class="stxt">Usa un vaso con agua, enjuaga y escupe en el lavamanos.</p>
+      <button class="dbtn" onclick="markDone('d5')">✅ ¡Lo hice!</button>
+    </div>
+  </div>
+
+  <div class="scard" id="d6">
+    <div class="shead" onclick="toggle('d6')">
+      <div class="snum">6</div><div class="stitle">Limpiar todo</div><div class="sarrow">▼</div>
+    </div>
+    <div class="sbody">
+      <div class="vstage"><canvas id="cv-d6" width="480" height="220"></canvas>
+        <div class="vcap">✨ Guarda el cepillo y sécate la boca</div></div>
+      <p class="stxt">Lava el cepillo, guárdalo y sécate la boca. ¡Terminaste!</p>
+      <button class="dbtn" onclick="markDone('d6')">✅ ¡Lo hice!</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const done = new Set();
+const loops = {};
+
+function toggle(id){
+  const card=document.getElementById(id);
+  const wasOpen=card.classList.contains('open');
+  card.classList.toggle('open');
+  if(!wasOpen) startAnim(id); else stopAnim(id);
+}
+
+function markDone(id){
+  done.add(id);
+  const btn=document.querySelector('#'+id+' .dbtn');
+  btn.textContent='🌟 ¡Muy bien!'; btn.classList.add('done'); btn.disabled=true;
+  document.getElementById(id).style.borderLeftColor='#388E3C';
+  document.getElementById(id).querySelector('.snum').style.background='#388E3C';
+  const n=done.size;
+  document.getElementById('pb').style.width=(n/6*100)+'%';
+  document.getElementById('pl').textContent=n+' de 6 pasos completados'+(n===6?' 🎉 ¡Excelente!':'');
+}
+
+function stopAnim(id){ if(loops[id]){ cancelAnimationFrame(loops[id]); delete loops[id]; } }
+
+function startAnim(id){
+  stopAnim(id);
+  const fn=animFns[id];
+  if(!fn) return;
+  const cv=document.getElementById('cv-'+id);
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  let t=0;
+  function frame(){ ctx.clearRect(0,0,cv.width,cv.height); fn(ctx,cv.width,cv.height,t); t++; loops[id]=requestAnimationFrame(frame); }
+  frame();
+}
+
+function sky(ctx,W,H,a,b){
+  const g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,a); g.addColorStop(1,b);
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+}
+
+function drawPerson(ctx,x,y,sc,armA,mouthOpen){
+  sc=sc||1; armA=armA||0;
+  ctx.save(); ctx.translate(x,y); ctx.scale(sc,sc);
+  ctx.fillStyle='#FF8A65';
+  ctx.beginPath(); ctx.roundRect(-14,-30,28,40,6); ctx.fill();
+  ctx.fillStyle='#FFCC80';
+  ctx.beginPath(); ctx.arc(0,-44,18,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#333';
+  ctx.beginPath(); ctx.arc(-6,-46,2.5,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(6,-46,2.5,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#555'; ctx.lineWidth=2;
+  if(mouthOpen){
+    ctx.fillStyle='#c62828'; ctx.beginPath(); ctx.arc(0,-40,5,0,Math.PI); ctx.fill();
+  } else {
+    ctx.beginPath(); ctx.arc(0,-40,5,0.2,Math.PI-0.2); ctx.stroke();
+  }
+  ctx.strokeStyle='#FF8A65'; ctx.lineWidth=8; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(-14,-20); ctx.lineTo(-14-18*Math.cos(armA),-20+18*Math.sin(armA)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(14,-20);  ctx.lineTo(14+18*Math.cos(armA), -20+18*Math.sin(armA)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-7,10); ctx.lineTo(-10,38); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(7,10);  ctx.lineTo(10,38);  ctx.stroke();
+  ctx.restore();
+}
+
+function drawBrush(ctx,x,y,angle){
+  angle=angle||0;
+  ctx.save(); ctx.translate(x,y); ctx.rotate(angle);
+  ctx.fillStyle='#4CAF50';
+  ctx.beginPath(); ctx.roundRect(-5,-35,10,50,4); ctx.fill();
+  ctx.fillStyle='#e0e0e0';
+  ctx.beginPath(); ctx.roundRect(-9,-44,18,16,4); ctx.fill();
+  ctx.strokeStyle='#90caf9'; ctx.lineWidth=2;
+  for(let i=0;i<5;i++){ ctx.beginPath(); ctx.moveTo(-7+i*3.5,-28); ctx.lineTo(-7+i*3.5,-36); ctx.stroke(); }
+  ctx.restore();
+}
+
+function drawTube(ctx,x,y,angle,sq){
+  angle=angle||0; sq=sq||0;
+  ctx.save(); ctx.translate(x,y); ctx.rotate(angle);
+  ctx.fillStyle='#42A5F5';
+  ctx.beginPath(); ctx.roundRect(-10,-40+sq*5,20,55-sq*5,6); ctx.fill();
+  ctx.fillStyle='#1565C0';
+  ctx.beginPath(); ctx.roundRect(-6,-46,12,12,3); ctx.fill();
+  ctx.restore();
+}
+
+function drawFaucet(ctx,x,y,on){
+  ctx.save(); ctx.translate(x,y);
+  ctx.fillStyle='#90A4AE';
+  ctx.beginPath(); ctx.roundRect(-6,-60,12,60,4); ctx.fill();
+  ctx.beginPath(); ctx.roundRect(-14,-18,28,10,4); ctx.fill();
+  ctx.fillStyle='#CFD8DC';
+  ctx.beginPath(); ctx.arc(0,-60,10,0,Math.PI*2); ctx.fill();
+  if(on){
+    ctx.strokeStyle='#64B5F6'; ctx.lineWidth=5; ctx.lineCap='round';
+    for(let i=0;i<4;i++){
+      ctx.globalAlpha=0.7-i*0.15;
+      ctx.beginPath(); ctx.moveTo(0,-8+i*14); ctx.lineTo(0,-8+i*14+10); ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+  ctx.restore();
+}
+
+function drawSink(ctx,x,y){
+  ctx.fillStyle='#eceff1'; ctx.strokeStyle='#b0bec5'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.roundRect(x-50,y,100,40,8); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#90caf9';
+  ctx.beginPath(); ctx.ellipse(x,y+20,15,10,0,0,Math.PI*2); ctx.fill();
+}
+
+function drawVaso(ctx,x,y,wl){
+  ctx.strokeStyle='#90CAF9'; ctx.lineWidth=3;
+  ctx.beginPath(); ctx.moveTo(x-12,y); ctx.lineTo(x-14,y+35); ctx.lineTo(x+14,y+35); ctx.lineTo(x+12,y); ctx.stroke();
+  if(wl>0){
+    ctx.fillStyle='rgba(100,181,246,0.6)';
+    const h=35*wl;
+    ctx.beginPath(); ctx.moveTo(x-13,y+35-h+2); ctx.lineTo(x-14,y+35); ctx.lineTo(x+14,y+35); ctx.lineTo(x+13,y+35-h+2); ctx.fill();
+  }
+}
+
+function drawStar(ctx,x,y,r,t){
+  ctx.save(); ctx.translate(x,y); ctx.rotate(t*0.05);
+  ctx.fillStyle='#FDD835'; ctx.beginPath();
+  for(let i=0;i<5;i++){
+    const a=Math.PI/180*(72*i-90), b=Math.PI/180*(72*i-90+36);
+    if(i===0) ctx.moveTo(r*Math.cos(a),r*Math.sin(a)); else ctx.lineTo(r*Math.cos(a),r*Math.sin(a));
+    ctx.lineTo(r*.4*Math.cos(b),r*.4*Math.sin(b));
+  }
+  ctx.closePath(); ctx.fill(); ctx.restore();
+}
+
+const animFns = {
+  'd1':(ctx,W,H,t)=>{
+    sky(ctx,W,H,'#e8f5e9','#c8e6c9');
+    ctx.fillStyle='#8D6E63'; ctx.fillRect(W/2-80,H/2-20,160,10);
+    ctx.save(); ctx.translate(W/2-40+Math.sin(t*.05)*3, H/2-65); drawBrush(ctx,0,0,-0.2); ctx.restore();
+    drawTube(ctx,W/2+20,H/2-60,0.1);
+    const reach=0.5+0.5*Math.sin(t*0.04);
+    drawPerson(ctx,W/2-80,H/2+60,1,reach*0.8);
+    ctx.fillStyle='#FDD835'; ctx.font='22px serif'; ctx.textAlign='center';
+    ctx.fillText('✨',W/2+55,H/2-70+Math.sin(t*0.07)*5);
+    ctx.fillStyle='#1B5E20'; ctx.font='bold 13px Nunito';
+    ctx.fillText('¡Busca tu cepillo y la pasta!',W/2,H-10);
+  },
+  'd2':(ctx,W,H,t)=>{
+    sky(ctx,W,H,'#fff8e1','#ffe082');
+    const p=(t%100)/100;
+    const sq=p<0.5?p*2:2-p*2;
+    drawBrush(ctx,W/2,H/2+30,0);
+    drawTube(ctx,W/2,H/2-30,-0.3,sq*0.8);
+    if(p>0.3&&p<0.8){
+      const dy=H/2-20+(p-0.3)*200;
+      ctx.fillStyle='#26C6DA'; ctx.beginPath(); ctx.ellipse(W/2+5,dy,6,8,0,0,Math.PI*2); ctx.fill();
+    }
+    if(p>0.6){
+      ctx.fillStyle='#26C6DA'; ctx.beginPath(); ctx.ellipse(W/2,H/2+18,8,6,0,0,Math.PI*2); ctx.fill();
+    }
+    drawPerson(ctx,W/2-80,H/2+60,1,0.7+sq*0.3);
+    ctx.fillStyle='#0288D1'; ctx.font='bold 13px Nunito'; ctx.textAlign='center';
+    ctx.fillText('del tamaño de un guisante 🟢',W/2,H-10);
+  },
+  'd3':(ctx,W,H,t)=>{
+    sky(ctx,W,H,'#e0f2f1','#b2dfdb');
+    drawSink(ctx,W/2+20,H/2+40);
+    drawFaucet(ctx,W/2+20,H/2-30,true);
+    const bx=W/2+20+Math.sin(t*0.06)*35;
+    drawBrush(ctx,bx,H/2+20,-0.15);
+    for(let i=0;i<6;i++){
+      const dx=W/2+20+(i-3)*8, dy=H/2-20+((t*2+i*15)%60);
+      ctx.fillStyle='rgba(100,181,246,0.8)'; ctx.beginPath(); ctx.arc(dx,dy,3,0,Math.PI*2); ctx.fill();
+    }
+    drawPerson(ctx,W/2-70,H/2+60,1,0.6+Math.abs(Math.sin(t*0.06))*0.4);
+    ctx.fillStyle='#004D40'; ctx.font='bold 13px Nunito'; ctx.textAlign='center';
+    ctx.fillText('Pasa rápido el cepillo bajo el agua 💧',W/2,H-10);
+  },
+  'd4':(ctx,W,H,t)=>{
+    sky(ctx,W,H,'#fce4ec','#f8bbd0');
+    const cx=W/2,cy=H/2-10;
+    ctx.fillStyle='#FFCC80'; ctx.beginPath(); ctx.arc(cx,cy,55,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#333';
+    ctx.beginPath(); ctx.arc(cx-18,cy-12,5,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx+18,cy-12,5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#c62828'; ctx.beginPath(); ctx.arc(cx,cy+10,24,0,Math.PI); ctx.fill();
+    ctx.fillStyle='#fff';
+    for(let i=0;i<6;i++){ ctx.beginPath(); ctx.roundRect(cx-22+i*8,cy+10,7,14,2); ctx.fill(); }
+    const bA=Math.sin(t*0.12)*0.5;
+    drawBrush(ctx,cx+15+Math.sin(t*0.12)*18,cy+10,bA);
+    for(let i=0;i<5;i++){
+      ctx.globalAlpha=0.5+Math.sin(t*0.08+i)*0.3; ctx.fillStyle='#e3f2fd';
+      ctx.beginPath(); ctx.arc(cx-10+i*10,cy+35+Math.sin(t*0.1+i)*5,4+i,0,Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha=1;
+    const c=Math.min(20,Math.floor((t%200)/10)+1);
+    ctx.fillStyle='#880E4F'; ctx.font='bold 22px Nunito'; ctx.textAlign='center';
+    ctx.fillText(c<20?c+'...':'✅ ¡20!',W/2,H-10);
+  },
+  'd5':(ctx,W,H,t)=>{
+    sky(ctx,W,H,'#e3f2fd','#bbdefb');
+    drawSink(ctx,W/2+30,H/2+50);
+    const p=(t%120)/120;
+    drawVaso(ctx,W/2-40,H/2-30,1-p*0.8);
+    if(p<0.4){
+      ctx.strokeStyle='rgba(100,181,246,0.7)'; ctx.lineWidth=5; ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(W/2-28,H/2-10); ctx.quadraticCurveTo(W/2,H/2+10,W/2+20,H/2+25); ctx.stroke();
+    }
+    if(p>0.3&&p<0.7){
+      ctx.strokeStyle='#1976D2'; ctx.lineWidth=3;
+      ctx.beginPath(); ctx.arc(W/2+30,H/2+30,18,0,Math.PI*1.5); ctx.stroke();
+      ctx.fillStyle='#1976D2'; ctx.beginPath(); ctx.moveTo(W/2+30,H/2+12); ctx.lineTo(W/2+24,H/2+20); ctx.lineTo(W/2+36,H/2+20); ctx.fill();
+    }
+    if(p>0.7){
+      ctx.strokeStyle='rgba(100,181,246,0.6)'; ctx.lineWidth=6;
+      ctx.beginPath(); ctx.moveTo(W/2+30,H/2+30); ctx.quadraticCurveTo(W/2+50,H/2+40,W/2+60,H/2+55); ctx.stroke();
+    }
+    drawPerson(ctx,W/2-70,H/2+60,1,0.5,p>0.3&&p<0.7);
+    ctx.fillStyle='#0D47A1'; ctx.font='bold 13px Nunito'; ctx.textAlign='center';
+    ctx.fillText('Toma agua · mueve · escupe 💦',W/2,H-10);
+  },
+  'd6':(ctx,W,H,t)=>{
+    sky(ctx,W,H,'#e8f5e9','#a5d6a7');
+    drawSink(ctx,W/2+20,H/2+40);
+    drawFaucet(ctx,W/2+20,H/2-30,true);
+    const p=(t%150)/150;
+    if(p<0.4) drawBrush(ctx,W/2+20,H/2+10,0);
+    else if(p<0.7){
+      const bx=W/2+20+(W/2-80-(W/2+20))*(p-0.4)/0.3;
+      drawBrush(ctx,bx,H/2,-0.3);
+    } else {
+      ctx.fillStyle='#80CBC4'; ctx.beginPath(); ctx.roundRect(W/2-80,H/2,28,30,4); ctx.fill();
+      drawBrush(ctx,W/2-66,H/2-20,0);
+    }
+    if(p>0.6){
+      ctx.fillStyle='#F48FB1'; ctx.strokeStyle='#F06292'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.roundRect(W/2+50+Math.sin(t*0.1)*18-15,H/2-5,30,18,6); ctx.fill(); ctx.stroke();
+    }
+    drawPerson(ctx,W/2-90,H/2+60,1,0.4+Math.sin(t*0.05)*0.2);
+    if(p>0.85){ ctx.font='bold 34px serif'; ctx.textAlign='center'; ctx.fillText('✅',W/2+10,H/2+30); }
+    drawStar(ctx,W-30,25,14,t);
+    ctx.fillStyle='#1B5E20'; ctx.font='bold 13px Nunito'; ctx.textAlign='center';
+    ctx.fillText('¡Lava el cepillo y guárdalo! 🪥',W/2,H-10);
+  },
+};
+
+toggle('d1');
+</script>
+</body>
+</html>
